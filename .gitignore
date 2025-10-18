@@ -1,2 +1,7 @@
+data/
+
 #ignore all tiff files
-*.tiff
+*.tif
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
