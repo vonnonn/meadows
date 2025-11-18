@@ -216,7 +216,7 @@ def pdal_pipeline(extent, usgs_3dep_dataset_names):
 
     reprojection_stage = {
         "type":"filters.reprojection",
-        "out_srs":"EPSG:{}".format(6339)
+        "out_srs":"EPSG:{}".format(3310)
     }
 
     pointcloud_pipeline['pipeline'].append(filter_low_outliers_stage)
@@ -296,6 +296,11 @@ def fill_nodata(raster_path, boundary_path):
         profile = src.profile
         transform = src.transform
         nodata = src.nodata
+
+    if gdf.crs.srs.split(':')[1] != str(src.crs.to_epsg()):
+        gdf = gdf.to_crs(src.crs.to_epsg())
+    
+    assert gdf.crs.srs.split(':')[1] == str(src.crs.to_epsg())
 
     mask = geometry_mask(
         geometries=gdf.geometry,
